@@ -1,7 +1,7 @@
 package com.cwfa.usermanagement.web;
 
 import com.cwfa.usermanagement.domain.dto.UserDto;
-import com.cwfa.usermanagement.domain.entity.User;
+import com.cwfa.usermanagement.domain.entity.WebsiteUser;
 import com.cwfa.usermanagement.service.UserManagementService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -10,12 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * RestController for management of users
  */
 @RestController
 @Slf4j
 @RequestMapping(value = "/api/usermanagement")
+@CrossOrigin("http://localhost:5173")
 public class UserManagementController {
 
     @Autowired
@@ -28,9 +32,8 @@ public class UserManagementController {
      */
     @Operation(summary = "get all users")
     @GetMapping("/getUsers")
-    public ResponseEntity<HttpStatus> getUsers() {
-        userManagementService.getUsers();
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<List<WebsiteUser>> getUsers() {
+        return ResponseEntity.of(Optional.of(userManagementService.getUsers()));
     }
 
     /**
@@ -41,7 +44,7 @@ public class UserManagementController {
      */
     @Operation(summary = "get user by username")
     @GetMapping("/getUser")
-    public User getUserByUsername(@RequestBody String username) {
+    public WebsiteUser getUserByUsername(@RequestBody String username) {
         return userManagementService.getUserByUsername(username);
     }
 
